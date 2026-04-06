@@ -1,54 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_first/app/provider/auth.dart';
-import 'package:project_first/ui/screen/home/home_screen.dart';
-import 'package:project_first/ui/screen/login/register_screen.dart';
+import 'package:project_first/domain/usecases/register_usecase.dart';
 import '../../../app/provider.dart';
-import '../../../domain/usecases/login_usecase.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _usernameController = TextEditingController();
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   bool _isLoading = false;
   String? _message;
 
-  void _handleLogin() async {
+  void _handleRegister() async {
     setState(() {
       _isLoading = true;
-
       _message = null;
     });
 
-    final loginUseCase = ref.read(loginUseCaseProvider);
+    final registerUseCase = ref.read(registerUseCaseProvider);
 
     try {
-      final token = await loginUseCase.call(
-        LoginParams(
-          username: _usernameController.text,
+      await registerUseCase.call(
+        RegisterParams(
+          name: _nameController.text,
+          email: _emailController.text,
           password: _passwordController.text,
         ),
       );
-      ref.read(isLoginProvider.notifier).state = true;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
-            (route) => false,
-      );
+
       setState(() {
-        _message = 'Đăng nhập thành công 🎉';
+        _message = 'Đăng ký thành công 🎉';
+      });
+
+      // 👉 quay lại login
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pop(context);
       });
     } catch (e) {
-      print("error login: $e");
       setState(() {
-        _message = 'Sai tài khoản hoặc mật khẩu';
+        _message = 'Đăng ký thất bại';
       });
     } finally {
       setState(() {
@@ -59,9 +56,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xfff5f6fa),
+      appBar: AppBar(
+        title: const Text('Register'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -71,26 +72,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
-                BoxShadow(
-                  blurRadius: 20,
-                  color: Colors.black.withOpacity(0.1),
-                )
+                BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(0.1)),
               ],
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.lock_outline, size: 60, color: Colors.blue),
+                const Icon(Icons.person_add, size: 60, color: Colors.blue),
                 const SizedBox(height: 10),
                 const Text(
-                  "Welcome Back",
+                  "Create Account",
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
 
-                // Username
+                // Name
                 TextField(
-                  controller: _usernameController,
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    prefixIcon: const Icon(Icons.person),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Email
+                TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
                     prefixIcon: const Icon(Icons.email),
@@ -116,21 +128,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
 
                 const SizedBox(height: 20),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => RegisterScreen()),
-                    );
-                  },
-                  child: const Text("Chưa có tài khoản? Đăng ký"),
-                ),
+
                 // Button
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _handleLogin,
+                    onPressed: _isLoading ? null : _handleRegister,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
@@ -140,9 +144,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: _isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
                         : const Text(
-                      "Login",
-                      style: TextStyle(fontSize: 16),
-                    ),
+                            "Register",
+                            style: TextStyle(fontSize: 16),
+                          ),
                   ),
                 ),
 
@@ -158,6 +162,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           : Colors.red,
                     ),
                   ),
+
+                const SizedBox(height: 10),
+
+                // 👉 chuyển về login
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Đã có tài khoản? Đăng nhập"),
+                ),
               ],
             ),
           ),

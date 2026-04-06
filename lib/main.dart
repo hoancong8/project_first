@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
-import 'app/my_app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'ui/screen/login/login_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    // 1. Bao bọc ứng dụng bằng ProviderScope để Riverpod hoạt động
+    const ProviderScope(
+      child: MaterialApp(
+        home: LoginScreen(),
+      ),
+    ),
+  );
 }
