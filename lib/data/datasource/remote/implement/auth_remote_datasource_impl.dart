@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import '../../dto/auth/auth_dto.dart';
+import 'package:project_first/data/datasource/remote/abstract/auth_remote_datasource.dart';
+import '../../../dto/auth/auth_dto.dart';
 
-class AuthRemoteDataSource {
+class AuthRemoteDataSourceImpl implements AuthRemoteDataSource{
   final Dio _dio;
-
-  AuthRemoteDataSource(this._dio);
-
+  AuthRemoteDataSourceImpl(this._dio);
+  @override
   Future<AuthDto> login(String username, String password) async {
     try {
       final response = await _dio.post('/api/auth/login', data: {
@@ -18,6 +18,7 @@ class AuthRemoteDataSource {
       rethrow;
     }
   }
+  @override
   Future<String> register(String username, String password,String name) async {
     try {
       final response = await _dio.post('/api/auth/register', data: {

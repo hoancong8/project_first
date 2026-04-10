@@ -4,7 +4,7 @@ import 'package:project_first/app/provider/auth.dart';
 import 'package:project_first/ui/screen/home/home_screen.dart';
 import 'package:project_first/ui/screen/login/register_screen.dart';
 import '../../../app/provider.dart';
-import '../../../domain/usecases/login_usecase.dart';
+import '../../../domain/usecases/auth/login_usecase.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});

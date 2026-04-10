@@ -1,4 +1,4 @@
-import '../../app/usecase.dart';
+import '../../../app/usecase.dart';
 
 class LoginWithOtpUseCase extends UseCase<dynamic, dynamic> {
   @override

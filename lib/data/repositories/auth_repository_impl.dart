@@ -1,4 +1,5 @@
-import 'package:project_first/data/datasource/remote/auth_remote_datasource.dart';
+import 'package:project_first/data/datasource/remote/abstract/auth_remote_datasource.dart';
+import 'package:project_first/data/datasource/remote/implement/auth_remote_datasource_impl.dart';
 import 'package:project_first/data/mapper/auth_mapper.dart';
 import 'package:project_first/domain/entities/auth_token.dart';
 import 'package:project_first/domain/repositories/auth_repository.dart';
@@ -19,6 +20,5 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<String> register(String username, String password,String name) async {
     return await remoteDataSource.register(username,password,name);
-
   }
 }

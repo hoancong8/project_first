@@ -1,6 +1,6 @@
-import '../../app/usecase.dart';
-import '../entities/auth_token.dart';
-import '../repositories/auth_repository.dart';
+import '../../../app/usecase.dart';
+import '../../entities/auth_token.dart';
+import '../../repositories/auth_repository.dart';
 
 class RegisterParams {
   final String email;
@@ -11,9 +11,7 @@ class RegisterParams {
 
 class RegisterUsecase extends UseCase<String, RegisterParams> {
   final AuthRepository repository;
-
   RegisterUsecase(this.repository);
-
   @override
   Future<String> call(RegisterParams params) async {
     return await repository.register(params.email, params.password,params.name);

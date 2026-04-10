@@ -7,7 +7,6 @@ class AuthMapper extends Mapper<AuthDto, AuthToken> {
   AuthToken map(AuthDto input) {
     return AuthToken(
       accessToken: input.token,
-      user: input.user,
     );
   }
 }

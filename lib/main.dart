@@ -8,6 +8,7 @@ void main() {
     const ProviderScope(
       child: MaterialApp(
         home: LoginScreen(),
+        debugShowCheckedModeBanner: false,
       ),
     ),
   );
