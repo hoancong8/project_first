@@ -25,7 +25,7 @@ final dioProvider = Provider((ref) {
   print("ip : ${getIP()}");
   final dio = Dio(
     BaseOptions(
-      baseUrl: 'http://192.168.1.16:3000',
+      baseUrl: 'http://192.168.1.32:5291',
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {

@@ -19,26 +19,65 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ref.read(homeViewModelProvider.notifier).getProfile();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(homeViewModelProvider);
-    return
-      state.isLoading?
-          const CircularProgressIndicator():
-      Scaffold(
-      appBar: AppBar(title: const Text('Home3443535')),
-      body: Column(
-        children: [
-          Text(state.user?.name ?? '243'),
-          Text(state.user?.email ?? '234'),
-          Text(state.user?.isOnline.toString()?? "234"),
-          Text(state.user?.avtUrl ?? "234"),
-          Text(state.user?.id.toString() ?? "234"),
-          Text(state.user?.timeLogin.toString() ?? "234"),
+    return state.isLoading
+        ? Center(child: const CircularProgressIndicator())
+        : DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text('Home3443535'),
+                actions: [
+                  IconButton(icon: Icon(Icons.home), onPressed: () {}),
+                  IconButton(icon: Icon(Icons.person), onPressed: () {}),
+                ],
+                bottom: TabBar(
+                  tabs: [
+                    Tab(icon: Icon(Icons.home)),
+                    Tab(icon: Icon(Icons.video_call)),
+                    Tab(icon: Icon(Icons.person)),
+                  ],
+                ),
+              ),
 
-        ],
-      ),
-
-    );
+              body: TabBarView(
+                children: [
+                  Column(
+                    children: [
+                      Text(state.user?.name ?? '243'),
+                      Text(state.user?.email ?? '234'),
+                      Text(state.user?.isOnline.toString() ?? "234"),
+                      Text(state.user?.avtUrl ?? "234"),
+                      Text(state.user?.id.toString() ?? "234"),
+                      Text(state.user?.timeLogin.toString() ?? "234"),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(state.user?.name ?? '243'),
+                      Text(state.user?.email ?? '234'),
+                      Text(state.user?.isOnline.toString() ?? "234"),
+                      Text(state.user?.avtUrl ?? "234"),
+                      Text(state.user?.id.toString() ?? "234"),
+                      Text(state.user?.timeLogin.toString() ?? "234"),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(state.user?.name ?? '243'),
+                      Text(state.user?.email ?? '234'),
+                      Text(state.user?.isOnline.toString() ?? "234"),
+                      Text(state.user?.avtUrl ?? "234"),
+                      Text(state.user?.id.toString() ?? "234"),
+                      Text(state.user?.timeLogin.toString() ?? "234"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }

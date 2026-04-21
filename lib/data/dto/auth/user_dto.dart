@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 class UserDto {
-  final int id;
+  final String id;
   final String? name;
   final String email;
   final String? avtUrl;
@@ -17,12 +17,12 @@ class UserDto {
   });
   factory UserDto.fromJson(Map<String, dynamic> json) {
     return UserDto(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      avtUrl: json['avatar_url'],
-      isOnline: json['is_onl'] == 1 ? true : false,
-      timeLogin: json['time_login'],
+      id: json["data"]['id'],
+      name: json["data"]['firstName'],
+      email: json["data"]['email'],
+      avtUrl: json["data"]['avatarUrl'],
+      isOnline: json["data"]['IsActive'] == 1 ? true : false,
+      timeLogin: json["data"]['phoneNumber'],
     );
   }
 }

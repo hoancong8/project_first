@@ -6,7 +6,7 @@ class AuthDto {
 
   factory AuthDto.fromJson(Map<String, dynamic> json) {
     return AuthDto(
-      token: json['token']
+      token: json['data']['token']
     );
   }
 }
