@@ -5,11 +5,16 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:project_first/app/utili.dart';
 import 'package:project_first/data/datasource/remote/abstract/auth_remote_datasource.dart';
+import 'package:project_first/data/datasource/remote/abstract/post_remote_datasource.dart';
 import 'package:project_first/data/datasource/remote/abstract/profile_remote_datasource.dart';
+import 'package:project_first/data/datasource/remote/implement/post_remote_datasource_impl.dart';
 import 'package:project_first/data/datasource/remote/implement/profile_remote_datasource_impl.dart';
+import 'package:project_first/data/repositories/post_repository_impl.dart';
 import 'package:project_first/data/repositories/profile_repository_impl.dart';
+import 'package:project_first/domain/repositories/post_repository.dart';
 import 'package:project_first/domain/repositories/profile_repository.dart';
 import 'package:project_first/domain/usecases/auth/register_usecase.dart';
+import 'package:project_first/domain/usecases/post/GetPostUsecase.dart';
 import 'package:project_first/domain/usecases/profile/get_profile_usecase.dart';
 import '../data/datasource/remote/implement/auth_remote_datasource_impl.dart';
 import '../data/mapper/auth_mapper.dart';
@@ -88,7 +93,10 @@ final profileRemoteDataSourceProvider = Provider<ProfileRemoteDatasource>((
   final dio = ref.watch(dioProvider);
   return ProfileRemoteDatasourceImpl(dio);
 });
-
+final postRemoteDataSourceProvider = Provider<PostRemoteDataSource>((ref){
+  final dio = ref.watch(dioProvider);
+  return PostRemoteDataSourceImpl(dio);
+});
 
 // 4. Cập nhật Repository Provider
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
@@ -100,6 +108,10 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
   final remote = ref.watch(profileRemoteDataSourceProvider);
   return ProfileRepositoryImpl(remoteDatasource: remote);
+});
+final postRepositoryProvider = Provider<PostRepository>((ref) {
+  final remote = ref.watch(postRemoteDataSourceProvider);
+  return PostRepositoryImpl(remoteDatasource: remote);
 });
 
 
@@ -119,4 +131,12 @@ final getProfileUseCaseProvider = Provider((ref) {
   return GetProfileUsecase(repository);
 
 });
+final getPostUseCaseProvider = Provider((ref) {
+  final repository = ref.watch(postRepositoryProvider);
+  return GetPostUsecase(repository);
+
+});
+
+
+
 // lib/app/provider.dart

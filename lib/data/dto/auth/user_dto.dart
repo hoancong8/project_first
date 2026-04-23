@@ -3,10 +3,10 @@ import 'dart:ffi';
 class UserDto {
   final String id;
   final String? name;
-  final String email;
+  final String? email;
   final String? avtUrl;
-  final bool isOnline;
-  final String timeLogin;
+  final bool? isOnline;
+  final String? timeLogin;
   UserDto({
     required this.email,
     required this.id,
@@ -17,12 +17,12 @@ class UserDto {
   });
   factory UserDto.fromJson(Map<String, dynamic> json) {
     return UserDto(
-      id: json["data"]['id'],
-      name: json["data"]['firstName'],
-      email: json["data"]['email'],
-      avtUrl: json["data"]['avatarUrl'],
-      isOnline: json["data"]['IsActive'] == 1 ? true : false,
-      timeLogin: json["data"]['phoneNumber'],
+      id: json['id']?.toString() ?? '',
+      name: (json['fullName'] ?? json['firstName'] ?? json['name'])?.toString(),
+      email: json['email']?.toString(), // Dùng toString() và nullable
+      avtUrl: json['avatarUrl']?.toString(),
+      isOnline: json['IsActive'] == 1,
+      timeLogin: (json['phoneNumber'] ?? json['timeLogin'])?.toString(), // Tránh bị null
     );
   }
 }

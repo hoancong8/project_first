@@ -11,7 +11,7 @@ class ProfileRemoteDatasourceImpl implements ProfileRemoteDatasource{
     try {
       final response = await _dio.get('/api/auth/profile');
 
-      return UserDto.fromJson(response.data);
+      return UserDto.fromJson(response.data['data']);
     } catch (e) {
       debugPrint("GET PROFILE ${e.toString()}");
       rethrow;
